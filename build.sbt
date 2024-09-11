@@ -3,7 +3,11 @@ organization := "com.ideal.linked"
 
 version := "0.6-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val root = (project in file(".")).enablePlugins(PlayScala).enablePlugins(AutomateHeaderPlugin)
+
+organizationName := "Linked Ideal LLC.[https://linked-ideal.com/]"
+startYear := Some(2021)
+licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 
 scalaVersion := "2.13.11"
 
