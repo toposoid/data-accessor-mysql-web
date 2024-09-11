@@ -1,0 +1,3 @@
+FROM mysql:8.0.37
+
+COPY ./conf/evolutions/default/toposoiddb.sql /docker-entrypoint-initdb.d/toposoiddb.sql
