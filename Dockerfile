@@ -12,7 +12,7 @@ RUN apt-get update \
 && cd data-accessor-mysql-web \
 && git pull \
 && git fetch origin ${TARGET_BRANCH} \
-&& git checkout ${TARGET_BRANCH}
+&& git checkout ${TARGET_BRANCH} \
 && sbt playUpdateSecret 1> /dev/null \
 && sbt dist \
 && cd /app/data-accessor-mysql-web/target/universal \
