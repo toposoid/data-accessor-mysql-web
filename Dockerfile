@@ -13,6 +13,10 @@ RUN apt-get update \
 && git pull \
 && git fetch origin ${TARGET_BRANCH} \
 && git checkout ${TARGET_BRANCH}
+&& sbt playUpdateSecret 1> /dev/null \
+&& sbt dist \
+&& cd /app/data-accessor-mysql-web/target/universal \
+&& unzip -o data-accessor-mysql-web-0.6-SNAPSHOT.zip
 
 COPY ./docker-entrypoint.sh /app/
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
