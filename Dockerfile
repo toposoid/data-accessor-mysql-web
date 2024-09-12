@@ -4,7 +4,6 @@ WORKDIR /app
 ARG TARGET_BRANCH
 ARG JAVA_OPT_XMX
 ENV DEPLOYMENT=local
-ENV _JAVA_OPTIONS="-Xss512k -Xms512m -Xmx2g"
 
 RUN apt-get update \
 && apt-get -y install git \
