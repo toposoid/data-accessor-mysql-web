@@ -3,7 +3,6 @@ FROM toposoid/toposoid-scala-lib-base:0.6-SNAPSHOT
 WORKDIR /app
 ARG TARGET_BRANCH
 ENV DEPLOYMENT=local
-#ENV _JAVA_OPTIONS="-Xss512k -Xms512m -Xmx4G"
 
 RUN apt-get update \
 && apt-get -y install git \

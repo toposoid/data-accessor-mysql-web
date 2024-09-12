@@ -6,7 +6,7 @@ services:
       - PRIVATE_IP_ADDRESS=data-accessor-mysql-web
       - TOPOSOID_RDB_HOST=mysql
       - TOPOSOID_RDB_URL=jdbc:mysql://mysql/toposoiddb?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
-      - TOPOSOID_JVM_XMS=1024m
+      - TOPOSOID_JVM_XMS=512m
       - TOPOSOID_JVM_XMX=1g
       - TOPOSOID_JVM_XSS=512k
       - PLAY_HTTP_PORT=9016

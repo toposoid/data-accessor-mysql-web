@@ -2,7 +2,6 @@ FROM toposoid/toposoid-scala-lib-base:0.6-SNAPSHOT
 
 WORKDIR /app
 ARG TARGET_BRANCH
-ARG JAVA_OPT_XMX
 ENV DEPLOYMENT=local
 
 RUN apt-get update \
