@@ -17,6 +17,7 @@
 package controllers
 
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, ToposoidUtils, TransversalState}
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.KnowledgeRegisterHistoryRecord
 import com.typesafe.scalalogging.LazyLogging
 import dao.KnowledgeRegisterHistoryDao
 import play.api.libs.json.{Json, OWrites, Reads}
@@ -27,12 +28,13 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
+/*
 case class KnowledgeRegisterHistoryRecord(stateId:Long, documentId:String, sequentialNumber:Int, propositionId:String,sentences:String, json:String)
 object KnowledgeRegisterHistoryRecord {
   implicit val jsonWrites: OWrites[KnowledgeRegisterHistoryRecord] = Json.writes[KnowledgeRegisterHistoryRecord]
   implicit val jsonReads: Reads[KnowledgeRegisterHistoryRecord] = Json.reads[KnowledgeRegisterHistoryRecord]
 }
-
+*/
 
 class KnowledgeRegisterHistoryController @Inject()(knowledgeRegisterHistoryDao:KnowledgeRegisterHistoryDao, val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext) extends BaseController  with LazyLogging{
   def add() = Action(parse.json) { request =>

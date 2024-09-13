@@ -17,6 +17,7 @@
 package controllers
 
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, ToposoidUtils, TransversalState}
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.DocumentAnalysisResultRecord
 import com.typesafe.scalalogging.LazyLogging
 import dao.DocumentAnalysisResultHistoryDao
 import model.Tables.DocumentAnalysisResultHistoryRow
@@ -28,12 +29,13 @@ import javax.inject.Inject
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext
 
+/*
 case class DocumentAnalysisResultRecord(documentId:String, originalFilename:String,totalSeparatedNumber:Int)
 object DocumentAnalysisResultRecord {
   implicit val jsonWrites: OWrites[DocumentAnalysisResultRecord] = Json.writes[DocumentAnalysisResultRecord]
   implicit val jsonReads: Reads[DocumentAnalysisResultRecord] = Json.reads[DocumentAnalysisResultRecord]
 }
-
+*/
 class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHistoryDao:DocumentAnalysisResultHistoryDao, val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext) extends BaseController  with LazyLogging{
 
   def add()  = Action(parse.json) { request =>
