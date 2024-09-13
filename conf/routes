@@ -4,8 +4,11 @@
 # ~~~~
 
 # An example controller showing a sample home page
-POST     /add                           controllers.DocumentAnalysisResultHistoryController.add()
-POST     /searchByDocumentId            controllers.DocumentAnalysisResultHistoryController.searchByDocumentId()
+POST     /addDocumentAnalysisResultHistory                      controllers.DocumentAnalysisResultHistoryController.add()
+POST     /searchDocumentAnalysisResultHistoryByDocumentId       controllers.DocumentAnalysisResultHistoryController.searchByDocumentId()
+POST     /addKnowledgeRegisterHistory                           controllers.DocumentAnalysisResultHistoryController.add()
+POST     /searchKnowledgeRegisterHistoryByDocumentId            controllers.DocumentAnalysisResultHistoryController.searchByDocumentId()
+POST     /getAllKnowledgeRegisterStates                         controllers.DocumentAnalysisResultHistoryController.getAll()
 
 # Map static resources from the /public folder to the /assets URL path
 

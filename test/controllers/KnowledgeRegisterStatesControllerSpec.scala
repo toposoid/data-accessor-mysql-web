@@ -70,7 +70,7 @@ class KnowledgeRegisterStatesControllerSpec extends PlaySpec with GuiceOneAppPer
     "returns an appropriate response" in new WithApplication(){
 
       val controller: KnowledgeRegisterStatesController = inject[KnowledgeRegisterStatesController]
-      val fr = FakeRequest(POST, "/getAll")
+      val fr = FakeRequest(POST, "/getAllKnowledgeRegisterStates")
         .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
         .withJsonBody(Json.toJson("{}"))
       val result = call(controller.getAll(), fr)

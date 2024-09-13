@@ -86,7 +86,7 @@ class KnowledgeRegisterHistoryControllerSpec extends PlaySpec with GuiceOneAppPe
                  |""".stripMargin
       )
 
-      val fr = FakeRequest(POST, "/add")
+      val fr = FakeRequest(POST, "/addKnowledgeRegisterHistory")
         .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
         .withJsonBody(Json.toJson(knowledgeRegisterHistoryRecord))
       val result = call(controller.add(), fr)
@@ -101,7 +101,7 @@ class KnowledgeRegisterHistoryControllerSpec extends PlaySpec with GuiceOneAppPe
         json = ""
       )
 
-      val fr2 = FakeRequest(POST, "/searchByDocumentId")
+      val fr2 = FakeRequest(POST, "/searchKnowledgeRegisterHistoryByDocumentId")
         .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
         .withJsonBody(Json.toJson(knowledgeRegisterHistoryRecord2))
       val result2 = call(controller.searchByDocumentId(), fr2)

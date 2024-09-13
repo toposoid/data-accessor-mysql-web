@@ -68,7 +68,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
         totalSeparatedNumber = 1
       )
 
-      val fr = FakeRequest(POST, "/add")
+      val fr = FakeRequest(POST, "/addDocumentAnalysisResultHistory")
         .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
         .withJsonBody(Json.toJson(documentAnalysisResultRecord))
       val result = call(controller.add(), fr)
@@ -80,7 +80,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
         totalSeparatedNumber = 0
       )
 
-      val fr2 = FakeRequest(POST, "/searchByDocumentId")
+      val fr2 = FakeRequest(POST, "/searchDocumentAnalysisResultHistoryByDocumentId")
         .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
         .withJsonBody(Json.toJson(documentAnalysisResultRecord2))
       val result2 = call(controller.searchByDocumentId(), fr2)
