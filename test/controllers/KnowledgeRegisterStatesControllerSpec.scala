@@ -19,6 +19,7 @@ package controllers
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, TransversalState}
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.KnowledgeRegisterStatesRecord
 import dao.KnowledgeRegisterStatesDao
 import org.scalatest.BeforeAndAfterAll
 import org.scalatestplus.play._
@@ -30,7 +31,7 @@ import play.api.libs.json.Json
 import play.api.test.Helpers._
 import play.api.test._
 import play.test.WithApplication
-import model.Tables.{KnowledgeRegisterStatesRow}
+import model.Tables.KnowledgeRegisterStatesRow
 
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext

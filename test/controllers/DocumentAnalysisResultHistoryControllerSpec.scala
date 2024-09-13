@@ -19,6 +19,7 @@ package controllers
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, TransversalState}
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.DocumentAnalysisResultRecord
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.libs.json.Json
