@@ -1,19 +1,3 @@
-/*
- * Copyright 2021 Linked Ideal LLC.[https://linked-ideal.com/]
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package model
 
 import java.time.LocalDateTime
@@ -27,11 +11,11 @@ trait KnowledgeRegisterHistoryTable {
   import slick.jdbc.{GetResult => GR}
   /** Entity class storing rows of table KnowledgeRegisterHistory
    *  @param id Database column id SqlType(BIGINT UNSIGNED), AutoInc, PrimaryKey
-   *  @param userId Database column user_id SqlType(VARCHAR), Length(1024,true)
+   *  @param userId Database column user_id SqlType(VARCHAR), Length(512,true)
    *  @param stateId Database column state_id SqlType(BIGINT)
-   *  @param documentId Database column document_id SqlType(VARCHAR), Length(1024,true)
+   *  @param documentId Database column document_id SqlType(VARCHAR), Length(512,true)
    *  @param sequentialNumber Database column sequential_number SqlType(INT)
-   *  @param propositionId Database column proposition_id SqlType(VARCHAR), Length(1024,true)
+   *  @param propositionId Database column proposition_id SqlType(VARCHAR), Length(512,true)
    *  @param sentences Database column sentences SqlType(TEXT)
    *  @param json Database column json SqlType(TEXT)
    *  @param createdAt Database column created_at SqlType(DATETIME)
@@ -50,16 +34,16 @@ trait KnowledgeRegisterHistoryTable {
 
     /** Database column id SqlType(BIGINT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Long] = column[Long]("id", O.AutoInc, O.PrimaryKey)
-    /** Database column user_id SqlType(VARCHAR), Length(1024,true) */
-    val userId: Rep[String] = column[String]("user_id", O.Length(1024,varying=true))
+    /** Database column user_id SqlType(VARCHAR), Length(512,true) */
+    val userId: Rep[String] = column[String]("user_id", O.Length(512,varying=true))
     /** Database column state_id SqlType(BIGINT) */
     val stateId: Rep[Long] = column[Long]("state_id")
-    /** Database column document_id SqlType(VARCHAR), Length(1024,true) */
-    val documentId: Rep[String] = column[String]("document_id", O.Length(1024,varying=true))
+    /** Database column document_id SqlType(VARCHAR), Length(512,true) */
+    val documentId: Rep[String] = column[String]("document_id", O.Length(512,varying=true))
     /** Database column sequential_number SqlType(INT) */
     val sequentialNumber: Rep[Int] = column[Int]("sequential_number")
-    /** Database column proposition_id SqlType(VARCHAR), Length(1024,true) */
-    val propositionId: Rep[String] = column[String]("proposition_id", O.Length(1024,varying=true))
+    /** Database column proposition_id SqlType(VARCHAR), Length(512,true) */
+    val propositionId: Rep[String] = column[String]("proposition_id", O.Length(512,varying=true))
     /** Database column sentences SqlType(TEXT) */
     val sentences: Rep[String] = column[String]("sentences")
     /** Database column json SqlType(TEXT) */
@@ -68,6 +52,13 @@ trait KnowledgeRegisterHistoryTable {
     val createdAt: Rep[LocalDateTime] = column[LocalDateTime]("created_at")
     /** Database column updated_at SqlType(DATETIME) */
     val updatedAt: Rep[LocalDateTime] = column[LocalDateTime]("updated_at")
+
+    /** Index over (documentId) (database name knowledge_register_history_document_id_idx) */
+    val index1 = index("knowledge_register_history_document_id_idx", documentId)
+    /** Index over (propositionId) (database name knowledge_register_history_proposition_id_idx) */
+    val index2 = index("knowledge_register_history_proposition_id_idx", propositionId)
+    /** Index over (userId) (database name knowledge_register_history_user_id_idx) */
+    val index3 = index("knowledge_register_history_user_id_idx", userId)
   }
   /** Collection-like TableQuery object for table KnowledgeRegisterHistory */
   lazy val KnowledgeRegisterHistory = new TableQuery(tag => new KnowledgeRegisterHistory(tag))

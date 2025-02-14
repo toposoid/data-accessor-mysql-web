@@ -16,7 +16,7 @@
 
 package controllers
 
-import model.Tables.{DocumentAnalysisResultHistory, KnowledgeRegisterHistory, KnowledgeRegisterStates}
+import model.Tables.{DocumentAnalysisResultHistory, DocumentAnalysisResultStates, KnowledgeRegisterHistory, KnowledgeRegisterStates}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -34,7 +34,7 @@ class TestUtils @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
   }
 
   def createTable() = {
-    val schema = DocumentAnalysisResultHistory.schema ++ KnowledgeRegisterHistory.schema ++ KnowledgeRegisterStates.schema
+    val schema = DocumentAnalysisResultHistory.schema ++ DocumentAnalysisResultStates.schema ++ KnowledgeRegisterHistory.schema ++ KnowledgeRegisterStates.schema
     Await.result(db.run(schema.dropIfExists),Duration.Inf)
     Await.result(db.run(schema.create),Duration.Inf)
   }

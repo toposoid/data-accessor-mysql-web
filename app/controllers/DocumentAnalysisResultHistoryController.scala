@@ -17,7 +17,7 @@
 package controllers
 
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, ToposoidUtils, TransversalState}
-import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.DocumentAnalysisResultRecord
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{DocumentAnalysisResultHistoryRecord}
 import com.typesafe.scalalogging.LazyLogging
 import dao.DocumentAnalysisResultHistoryDao
 import model.Tables.DocumentAnalysisResultHistoryRow
@@ -29,22 +29,17 @@ import javax.inject.Inject
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext
 
-/*
-case class DocumentAnalysisResultRecord(documentId:String, originalFilename:String,totalSeparatedNumber:Int)
-object DocumentAnalysisResultRecord {
-  implicit val jsonWrites: OWrites[DocumentAnalysisResultRecord] = Json.writes[DocumentAnalysisResultRecord]
-  implicit val jsonReads: Reads[DocumentAnalysisResultRecord] = Json.reads[DocumentAnalysisResultRecord]
-}
-*/
+
 class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHistoryDao:DocumentAnalysisResultHistoryDao, val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext) extends BaseController  with LazyLogging{
 
   def add()  = Action(parse.json) { request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
-      val documentAnalysisResult: DocumentAnalysisResultRecord = Json.parse(json.toString).as[DocumentAnalysisResultRecord]
+      val documentAnalysisResult: DocumentAnalysisResultHistoryRecord = Json.parse(json.toString).as[DocumentAnalysisResultHistoryRecord]
       val documentAnalysisResultHistory = DocumentAnalysisResultHistoryRow(
         id = 0,
+        stateId = documentAnalysisResult.stateId,
         userId = transversalState.userId,
         documentId = documentAnalysisResult.documentId,
         originalFilename = documentAnalysisResult.originalFilename,
@@ -65,9 +60,10 @@ class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHi
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
-      val documentAnalysisResult: DocumentAnalysisResultRecord = Json.parse(json.toString).as[DocumentAnalysisResultRecord]
+      val documentAnalysisResult: DocumentAnalysisResultHistoryRecord = Json.parse(json.toString).as[DocumentAnalysisResultHistoryRecord]
       val result = documentAnalysisResultHistoryDao.searchByDocumentId(documentAnalysisResult.documentId).head
-      val convertDocumentAnalysisResult = DocumentAnalysisResultRecord(
+      val convertDocumentAnalysisResult = DocumentAnalysisResultHistoryRecord(
+        stateId = result.stateId,
         documentId = result.documentId,
         originalFilename = result.originalFilename,
         totalSeparatedNumber = result.totalSeparatedNumber)

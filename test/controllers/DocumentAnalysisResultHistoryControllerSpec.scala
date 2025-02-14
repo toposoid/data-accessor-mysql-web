@@ -19,7 +19,7 @@ package controllers
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, TransversalState}
-import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.DocumentAnalysisResultRecord
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.DocumentAnalysisResultHistoryRecord
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.libs.json.Json
@@ -62,7 +62,8 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
     "returns an appropriate response" in new WithApplication(){
       val documentId = UUID.random.toString
       val controller: DocumentAnalysisResultHistoryController = inject[DocumentAnalysisResultHistoryController]
-      val documentAnalysisResultRecord:DocumentAnalysisResultRecord = DocumentAnalysisResultRecord(
+      val documentAnalysisResultRecord:DocumentAnalysisResultHistoryRecord = DocumentAnalysisResultHistoryRecord(
+        stateId = 0,
         documentId = documentId,
         originalFilename = "test",
         totalSeparatedNumber = 1
@@ -74,7 +75,8 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
       val result = call(controller.add(), fr)
       status(result) mustBe OK
 
-      val documentAnalysisResultRecord2: DocumentAnalysisResultRecord = DocumentAnalysisResultRecord(
+      val documentAnalysisResultRecord2: DocumentAnalysisResultHistoryRecord = DocumentAnalysisResultHistoryRecord(
+        stateId = 0,
         documentId = documentId,
         originalFilename = "",
         totalSeparatedNumber = 0
@@ -87,7 +89,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
       status(result2) mustBe OK
 
       val jsonResult: String = contentAsJson(result2).toString()
-      val documentAnalysisResultRecord3: DocumentAnalysisResultRecord = Json.parse(jsonResult).as[DocumentAnalysisResultRecord]
+      val documentAnalysisResultRecord3: DocumentAnalysisResultHistoryRecord = Json.parse(jsonResult).as[DocumentAnalysisResultHistoryRecord]
 
       assert(documentAnalysisResultRecord.documentId == documentAnalysisResultRecord3.documentId)
       assert(documentAnalysisResultRecord.originalFilename == documentAnalysisResultRecord3.originalFilename)
