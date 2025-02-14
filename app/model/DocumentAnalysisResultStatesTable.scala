@@ -1,4 +1,3 @@
-package model
 /*
  * Copyright 2021 Linked Ideal LLC.[https://linked-ideal.com/]
  *
@@ -14,6 +13,8 @@ package model
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package model
 
 import java.time.LocalDateTime
 // AUTO-GENERATED Slick data model for table DocumentAnalysisResultStates
