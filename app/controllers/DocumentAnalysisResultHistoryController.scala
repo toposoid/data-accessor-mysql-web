@@ -56,18 +56,28 @@ class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHi
     }
   }
 
-  def searchByDocumentId = Action(parse.json) { request =>
+  def searchByDocumentIdAndStateId = Action(parse.json) { request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
       val documentAnalysisResult: DocumentAnalysisResultHistoryRecord = Json.parse(json.toString).as[DocumentAnalysisResultHistoryRecord]
+      val records = documentAnalysisResultHistoryDao.searchByDocumentIdAndStateId(documentAnalysisResult.documentId, documentAnalysisResult.stateId).toList
+      val results:List[DocumentAnalysisResultHistoryRecord] = records.map(x => {
+        DocumentAnalysisResultHistoryRecord(
+          stateId = x.stateId,
+          documentId = x.documentId,
+          originalFilename = x.originalFilename,
+          totalSeparatedNumber = x.totalSeparatedNumber)
+      })
+      /*
       val result = documentAnalysisResultHistoryDao.searchByDocumentId(documentAnalysisResult.documentId).head
       val convertDocumentAnalysisResult = DocumentAnalysisResultHistoryRecord(
         stateId = result.stateId,
         documentId = result.documentId,
         originalFilename = result.originalFilename,
         totalSeparatedNumber = result.totalSeparatedNumber)
-      Ok(Json.toJson(convertDocumentAnalysisResult))
+       */
+      Ok(Json.toJson(results))
     } catch {
       case e: Exception => {
         logger.error(ToposoidUtils.formatMessageForLogger(e.toString, transversalState.userId), e)

@@ -33,8 +33,8 @@ class DocumentAnalysisResultHistoryDao @Inject()(protected val dbConfigProvider:
     Await.result(db.run(DocumentAnalysisResultHistory += u), Duration.Inf)
   }
 
-  def searchByDocumentId(documentId: String)(implicit ec: ExecutionContext): Seq[DocumentAnalysisResultHistoryRow] = {
-    val search = db.run(DocumentAnalysisResultHistory.filter(_.documentId === documentId).result)
+  def searchByDocumentIdAndStateId(documentId: String, stateId:Long)(implicit ec: ExecutionContext): Seq[DocumentAnalysisResultHistoryRow] = {
+    val search = db.run(DocumentAnalysisResultHistory.filter( x => x.documentId === documentId && x.stateId === stateId).result)
     Await.result(search, Duration.Inf)
   }
 

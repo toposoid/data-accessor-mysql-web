@@ -85,15 +85,16 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
       val fr2 = FakeRequest(POST, "/searchDocumentAnalysisResultHistoryByDocumentId")
         .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
         .withJsonBody(Json.toJson(documentAnalysisResultRecord2))
-      val result2 = call(controller.searchByDocumentId(), fr2)
+      val result2 = call(controller.searchByDocumentIdAndStateId(), fr2)
       status(result2) mustBe OK
 
       val jsonResult: String = contentAsJson(result2).toString()
-      val documentAnalysisResultRecord3: DocumentAnalysisResultHistoryRecord = Json.parse(jsonResult).as[DocumentAnalysisResultHistoryRecord]
+      val documentAnalysisResultRecord3: List[DocumentAnalysisResultHistoryRecord] = Json.parse(jsonResult).as[List[DocumentAnalysisResultHistoryRecord]]
 
-      assert(documentAnalysisResultRecord.documentId == documentAnalysisResultRecord3.documentId)
-      assert(documentAnalysisResultRecord.originalFilename == documentAnalysisResultRecord3.originalFilename)
-      assert(documentAnalysisResultRecord.totalSeparatedNumber == documentAnalysisResultRecord3.totalSeparatedNumber)
+      assert(documentAnalysisResultRecord.documentId == documentAnalysisResultRecord3.head.documentId)
+      assert(documentAnalysisResultRecord.stateId == documentAnalysisResultRecord3.head.stateId)
+      assert(documentAnalysisResultRecord.originalFilename == documentAnalysisResultRecord3.head.originalFilename)
+      assert(documentAnalysisResultRecord.totalSeparatedNumber == documentAnalysisResultRecord3.head.totalSeparatedNumber)
 
     }
   }
