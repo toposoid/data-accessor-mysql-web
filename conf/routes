@@ -10,6 +10,8 @@ POST     /getAllDocumentAnalysisResultStates                            controll
 POST     /addKnowledgeRegisterHistory                                   controllers.KnowledgeRegisterHistoryController.add()
 POST     /searchKnowledgeRegisterHistoryByDocumentId                    controllers.KnowledgeRegisterHistoryController.searchByDocumentId()
 POST     /getAllKnowledgeRegisterStates                                 controllers.KnowledgeRegisterStatesController.getAll()
-
+POST     /addNonSentenceSections                                        controllers.NonSentenceSectionsController.add()
+POST     /searchNonSentenceSectionsByDocumentId                         controllers.NonSentenceSectionsController.searchByDocumentId()
+POST     /getAllNonSentenceTypes                                        controllers.NonSentenceTypesController.getAll()
 # Map static resources from the /public folder to the /assets URL path
 

@@ -18,6 +18,8 @@ DROP TABLE IF EXISTS `knowledge_register_history`;
 DROP TABLE IF EXISTS `document_analysis_result_history`;
 DROP TABLE IF EXISTS `knowledge_register_states`;
 DROP TABLE IF EXISTS `document_analysis_result_states`;
+DROP TABLE IF EXISTS `non_sentence_sections`;
+DROP TABLE IF EXISTS `non_sentence_types`;
 
 CREATE TABLE toposoiddb.document_analysis_result_history (
     id serial NOT NULL PRIMARY KEY,
@@ -59,11 +61,31 @@ CREATE TABLE toposoiddb.knowledge_register_states (
 );
 
 
+CREATE TABLE toposoiddb.non_sentence_sections (
+    id serial NOT NULL PRIMARY KEY,
+    document_id VARCHAR(512) NOT NULL,
+    page_no INT NOT NULL,
+    non_sentence_type BIGINT NOT NULL,
+    non_sentence TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE toposoiddb.non_sentence_types (
+    id serial NOT NULL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
 CREATE INDEX document_analysis_result_history_user_id_idx on toposoiddb.document_analysis_result_history(user_id);
 CREATE INDEX document_analysis_result_history_document_id_idx on toposoiddb.document_analysis_result_history(document_id);
 CREATE INDEX knowledge_register_history_user_id_idx on toposoiddb.knowledge_register_history(user_id);
 CREATE INDEX knowledge_register_history_document_id_idx on toposoiddb.knowledge_register_history(document_id);
 CREATE INDEX knowledge_register_history_proposition_id_idx on toposoiddb.knowledge_register_history(proposition_id);
+CREATE INDEX non_sentence_sections_document_id_idx on toposoiddb.non_sentence_sections(document_id);
+CREATE INDEX non_sentence_sections_non_sentence_type_idx on toposoiddb.non_sentence_sections(non_sentence_type);
 
 INSERT INTO toposoiddb.document_analysis_result_states (name) VALUES ("success");
 INSERT INTO toposoiddb.document_analysis_result_states (name) VALUES ("failure");
@@ -74,3 +96,6 @@ INSERT INTO toposoiddb.document_analysis_result_states (name) VALUES ("analysis 
 INSERT INTO toposoiddb.knowledge_register_states (name) VALUES ("success");
 INSERT INTO toposoiddb.knowledge_register_states (name) VALUES ("failure");
 
+INSERT INTO toposoiddb.non_sentence_types (name) VALUES ("unspecified");
+INSERT INTO toposoiddb.non_sentence_types (name) VALUES ("references");
+INSERT INTO toposoiddb.non_sentence_types (name) VALUES ("table of contents");
