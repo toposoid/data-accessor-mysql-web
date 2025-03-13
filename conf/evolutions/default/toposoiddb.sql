@@ -99,3 +99,5 @@ INSERT INTO toposoiddb.knowledge_register_states (name) VALUES ("failure");
 INSERT INTO toposoiddb.non_sentence_types (name) VALUES ("unspecified");
 INSERT INTO toposoiddb.non_sentence_types (name) VALUES ("references");
 INSERT INTO toposoiddb.non_sentence_types (name) VALUES ("table of contents");
+INSERT INTO toposoiddb.non_sentence_types (name) VALUES ("headlines");
+INSERT INTO toposoiddb.non_sentence_types (name) VALUES ("title of top page");
