@@ -108,14 +108,14 @@ class KnowledgeRegisterHistoryControllerSpec extends PlaySpec with GuiceOneAppPe
       status(result2) mustBe OK
 
       val jsonResult: String = contentAsJson(result2).toString()
-      val knowledgeRegisterHistoryRecord3: KnowledgeRegisterHistoryRecord = Json.parse(jsonResult).as[KnowledgeRegisterHistoryRecord]
+      val knowledgeRegisterHistoryRecord3 = Json.parse(jsonResult).as[List[KnowledgeRegisterHistoryRecord]]
 
-      assert(knowledgeRegisterHistoryRecord.stateId == knowledgeRegisterHistoryRecord3.stateId)
-      assert(knowledgeRegisterHistoryRecord.documentId == knowledgeRegisterHistoryRecord3.documentId)
-      assert(knowledgeRegisterHistoryRecord.sequentialNumber == knowledgeRegisterHistoryRecord3.sequentialNumber)
-      assert(knowledgeRegisterHistoryRecord.propositionId == knowledgeRegisterHistoryRecord3.propositionId)
-      assert(knowledgeRegisterHistoryRecord.sentences == knowledgeRegisterHistoryRecord3.sentences)
-      assert(knowledgeRegisterHistoryRecord.json == knowledgeRegisterHistoryRecord3.json)
+      assert(knowledgeRegisterHistoryRecord.stateId == knowledgeRegisterHistoryRecord3.head.stateId)
+      assert(knowledgeRegisterHistoryRecord.documentId == knowledgeRegisterHistoryRecord3.head.documentId)
+      assert(knowledgeRegisterHistoryRecord.sequentialNumber == knowledgeRegisterHistoryRecord3.head.sequentialNumber)
+      assert(knowledgeRegisterHistoryRecord.propositionId == knowledgeRegisterHistoryRecord3.head.propositionId)
+      assert(knowledgeRegisterHistoryRecord.sentences == knowledgeRegisterHistoryRecord3.head.sentences)
+      assert(knowledgeRegisterHistoryRecord.json == knowledgeRegisterHistoryRecord3.head.json)
 
     }
   }

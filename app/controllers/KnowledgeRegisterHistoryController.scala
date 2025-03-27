@@ -17,7 +17,7 @@
 package controllers
 
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, ToposoidUtils, TransversalState}
-import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.KnowledgeRegisterHistoryRecord
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{DocumentAnalysisResultHistoryRecord, KnowledgeRegisterHistoryRecord}
 import com.typesafe.scalalogging.LazyLogging
 import dao.KnowledgeRegisterHistoryDao
 import play.api.libs.json.{Json, OWrites, Reads}
@@ -69,15 +69,17 @@ class KnowledgeRegisterHistoryController @Inject()(knowledgeRegisterHistoryDao:K
     try {
       val json = request.body
       val knowledgeRegisterHistoryRecord: KnowledgeRegisterHistoryRecord = Json.parse(json.toString).as[KnowledgeRegisterHistoryRecord]
-      val result = knowledgeRegisterHistoryDao.searchByDocumentId(knowledgeRegisterHistoryRecord.documentId).head
-      val convertKnowledgeRegisterHistoryRecord = KnowledgeRegisterHistoryRecord(
-        stateId = result.stateId,
-        documentId = result.documentId,
-        sequentialNumber = result.sequentialNumber,
-        propositionId = result.propositionId,
-        sentences = result.sentences,
-        json = result.json)
-      Ok(Json.toJson(convertKnowledgeRegisterHistoryRecord))
+      val records = knowledgeRegisterHistoryDao.searchByDocumentId(knowledgeRegisterHistoryRecord.documentId).toList
+      val results:List[KnowledgeRegisterHistoryRecord] = records.map(x => {
+        KnowledgeRegisterHistoryRecord(
+          stateId = x.stateId,
+          documentId = x.documentId,
+          sequentialNumber = x.sequentialNumber,
+          propositionId = x.propositionId,
+          sentences = x.sentences,
+          json = x.json)
+      })
+      Ok(Json.toJson(results))
     } catch {
       case e: Exception => {
         logger.error(ToposoidUtils.formatMessageForLogger(e.toString, transversalState.userId), e)

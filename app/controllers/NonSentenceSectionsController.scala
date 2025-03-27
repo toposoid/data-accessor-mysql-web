@@ -17,7 +17,7 @@
 package controllers
 
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, ToposoidUtils, TransversalState}
-import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.NonSentenceSectionsRecord
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{KnowledgeRegisterHistoryRecord, NonSentenceSectionsRecord}
 import com.typesafe.scalalogging.LazyLogging
 import dao.NonSentenceSectionsDao
 import model.Tables.NonSentenceSectionsRow
@@ -66,13 +66,15 @@ class NonSentenceSectionsController @Inject()(nonSentenceSectionsDao:NonSentence
     try {
       val json = request.body
       val nonSentenceSectionsRecord: NonSentenceSectionsRecord = Json.parse(json.toString).as[NonSentenceSectionsRecord]
-      val result = nonSentenceSectionsDao.searchByDocumentId(nonSentenceSectionsRecord.documentId).head
-      val convertNonSentenceSectionsRecord = NonSentenceSectionsRecord(
-        nonSentenceType = result.nonSentenceType,
-        documentId = result.documentId,
-        pageNo = result.pageNo,
-        nonSentence = result.nonSentence)
-      Ok(Json.toJson(convertNonSentenceSectionsRecord))
+      val records = nonSentenceSectionsDao.searchByDocumentId(nonSentenceSectionsRecord.documentId).toList
+      val results:List[NonSentenceSectionsRecord] = records.map(x => {
+        NonSentenceSectionsRecord(
+          nonSentenceType = x.nonSentenceType,
+          documentId = x.documentId,
+          pageNo = x.pageNo,
+          nonSentence = x.nonSentence)
+      })
+      Ok(Json.toJson(results))
     } catch {
       case e: Exception => {
         logger.error(ToposoidUtils.formatMessageForLogger(e.toString, transversalState.userId), e)

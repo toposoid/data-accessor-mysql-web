@@ -90,12 +90,12 @@ class NonSentenceSectionsControllerSpec extends PlaySpec with GuiceOneAppPerTest
       status(result2) mustBe OK
 
       val jsonResult: String = contentAsJson(result2).toString()
-      val nonSentenceSectionsRecord3: NonSentenceSectionsRecord = Json.parse(jsonResult).as[NonSentenceSectionsRecord]
+      val nonSentenceSectionsRecord3 = Json.parse(jsonResult).as[List[NonSentenceSectionsRecord]]
 
-      assert(nonSentenceSectionsRecord.nonSentenceType == nonSentenceSectionsRecord3.nonSentenceType)
-      assert(nonSentenceSectionsRecord.documentId == nonSentenceSectionsRecord3.documentId)
-      assert(nonSentenceSectionsRecord.pageNo == nonSentenceSectionsRecord3.pageNo)
-      assert(nonSentenceSectionsRecord.nonSentence == nonSentenceSectionsRecord3.nonSentence)
+      assert(nonSentenceSectionsRecord.nonSentenceType == nonSentenceSectionsRecord3.head.nonSentenceType)
+      assert(nonSentenceSectionsRecord.documentId == nonSentenceSectionsRecord3.head.documentId)
+      assert(nonSentenceSectionsRecord.pageNo == nonSentenceSectionsRecord3.head.pageNo)
+      assert(nonSentenceSectionsRecord.nonSentence == nonSentenceSectionsRecord3.head.nonSentence)
 
     }
   }
