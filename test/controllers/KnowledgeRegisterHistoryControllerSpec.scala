@@ -62,12 +62,13 @@ class KnowledgeRegisterHistoryControllerSpec extends PlaySpec with GuiceOneAppPe
     "returns an appropriate response" in new WithApplication(){
 
       val documentId = UUID.random.toString
+      val propositionId = UUID.random.toString
       val controller: KnowledgeRegisterHistoryController = inject[KnowledgeRegisterHistoryController]
       val knowledgeRegisterHistoryRecord:KnowledgeRegisterHistoryRecord = KnowledgeRegisterHistoryRecord(
         stateId = 0,
         documentId = documentId,
         sequentialNumber = 1,
-        propositionId = UUID.random.toString,
+        propositionId = propositionId,
         sentences = "これはテストです。",
         json = """  {
                  |    "premiseList": [],
@@ -116,6 +117,30 @@ class KnowledgeRegisterHistoryControllerSpec extends PlaySpec with GuiceOneAppPe
       assert(knowledgeRegisterHistoryRecord.propositionId == knowledgeRegisterHistoryRecord3.head.propositionId)
       assert(knowledgeRegisterHistoryRecord.sentences == knowledgeRegisterHistoryRecord3.head.sentences)
       assert(knowledgeRegisterHistoryRecord.json == knowledgeRegisterHistoryRecord3.head.json)
+
+      val knowledgeRegisterHistoryRecord4: KnowledgeRegisterHistoryRecord = KnowledgeRegisterHistoryRecord(
+        stateId = 0,
+        documentId = "",
+        sequentialNumber = -1,
+        propositionId = propositionId,
+        sentences = "",
+        json = "")
+
+      val fr3 = FakeRequest(POST, "/searchKnowledgeRegisterHistoryByPropositionId")
+        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
+        .withJsonBody(Json.toJson(knowledgeRegisterHistoryRecord4))
+      val result3 = call(controller.searchByPropositionId(), fr3)
+      status(result3) mustBe OK
+
+      val jsonResult2: String = contentAsJson(result3).toString()
+      val knowledgeRegisterHistoryRecord5 = Json.parse(jsonResult2).as[List[KnowledgeRegisterHistoryRecord]]
+
+      assert(knowledgeRegisterHistoryRecord.stateId == knowledgeRegisterHistoryRecord5.head.stateId)
+      assert(knowledgeRegisterHistoryRecord.documentId == knowledgeRegisterHistoryRecord5.head.documentId)
+      assert(knowledgeRegisterHistoryRecord.sequentialNumber == knowledgeRegisterHistoryRecord5.head.sequentialNumber)
+      assert(knowledgeRegisterHistoryRecord.propositionId == knowledgeRegisterHistoryRecord5.head.propositionId)
+      assert(knowledgeRegisterHistoryRecord.sentences == knowledgeRegisterHistoryRecord5.head.sentences)
+      assert(knowledgeRegisterHistoryRecord.json == knowledgeRegisterHistoryRecord5.head.json)
 
     }
   }

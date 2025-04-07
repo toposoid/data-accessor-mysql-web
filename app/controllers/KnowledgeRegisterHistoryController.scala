@@ -88,4 +88,28 @@ class KnowledgeRegisterHistoryController @Inject()(knowledgeRegisterHistoryDao:K
     }
   }
 
+  def searchByPropositionId = Action(parse.json) { request =>
+    val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
+    try {
+      val json = request.body
+      val knowledgeRegisterHistoryRecord: KnowledgeRegisterHistoryRecord = Json.parse(json.toString).as[KnowledgeRegisterHistoryRecord]
+      val records = knowledgeRegisterHistoryDao.searchByPropositionId(knowledgeRegisterHistoryRecord.propositionId).toList
+      val results: List[KnowledgeRegisterHistoryRecord] = records.map(x => {
+        KnowledgeRegisterHistoryRecord(
+          stateId = x.stateId,
+          documentId = x.documentId,
+          sequentialNumber = x.sequentialNumber,
+          propositionId = x.propositionId,
+          sentences = x.sentences,
+          json = x.json)
+      })
+      Ok(Json.toJson(results))
+    } catch {
+      case e: Exception => {
+        logger.error(ToposoidUtils.formatMessageForLogger(e.toString, transversalState.userId), e)
+        BadRequest(Json.obj("status" -> "Error", "message" -> e.toString()))
+      }
+    }
+  }
+
 }
