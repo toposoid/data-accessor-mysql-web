@@ -19,7 +19,7 @@ package controllers
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, TransversalState}
-import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.DocumentAnalysisResultHistoryRecord
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{DocumentAnalysisResultHistoryRecord, KnowledgeRegisterHistoryCount}
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.libs.json.Json
@@ -95,6 +95,16 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
       assert(documentAnalysisResultRecord.stateId == documentAnalysisResultRecord3.head.stateId)
       assert(documentAnalysisResultRecord.originalFilename == documentAnalysisResultRecord3.head.originalFilename)
       assert(documentAnalysisResultRecord.totalSeparatedNumber == documentAnalysisResultRecord3.head.totalSeparatedNumber)
+
+      val fr3 = FakeRequest(POST, "/getKnowledgeRegisterHistoryTotalCountByDocumentId")
+        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
+        .withJsonBody(Json.toJson(documentAnalysisResultRecord))
+      val result3 = call(controller.getTotalCountByDocumentId(), fr3)
+      status(result3) mustBe OK
+
+      val jsonResult3: String = contentAsJson(result3).toString()
+      val knowledgeRegisterHistoryCount:KnowledgeRegisterHistoryCount  = Json.parse(jsonResult3).as[KnowledgeRegisterHistoryCount]
+      assert(knowledgeRegisterHistoryCount.count == 1)
 
     }
   }
