@@ -10,6 +10,7 @@ POST     /getAllDocumentAnalysisResultStates                            controll
 POST     /addKnowledgeRegisterHistory                                   controllers.KnowledgeRegisterHistoryController.add()
 POST     /searchKnowledgeRegisterHistoryByDocumentId                    controllers.KnowledgeRegisterHistoryController.searchByDocumentId()
 POST     /searchKnowledgeRegisterHistoryByPropositionId                 controllers.KnowledgeRegisterHistoryController.searchByPropositionId()
+POST     /getKnowledgeRegisterHistoryCountByDocumentId                  controllers.KnowledgeRegisterHistoryController.getCountByDocumentId()
 POST     /getAllKnowledgeRegisterStates                                 controllers.KnowledgeRegisterStatesController.getAll()
 POST     /addNonSentenceSections                                        controllers.NonSentenceSectionsController.add()
 POST     /searchNonSentenceSectionsByDocumentId                         controllers.NonSentenceSectionsController.searchByDocumentId()

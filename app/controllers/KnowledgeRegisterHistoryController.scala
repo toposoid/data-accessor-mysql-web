@@ -17,7 +17,7 @@
 package controllers
 
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, ToposoidUtils, TransversalState}
-import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{DocumentAnalysisResultHistoryRecord, KnowledgeRegisterHistoryRecord}
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{DocumentAnalysisResultHistoryRecord, KnowledgeRegisterHistoryCount, KnowledgeRegisterHistoryRecord}
 import com.typesafe.scalalogging.LazyLogging
 import dao.KnowledgeRegisterHistoryDao
 import play.api.libs.json.{Json, OWrites, Reads}
@@ -27,14 +27,6 @@ import model.Tables.KnowledgeRegisterHistoryRow
 import java.time.LocalDateTime
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
-
-/*
-case class KnowledgeRegisterHistoryRecord(stateId:Long, documentId:String, sequentialNumber:Int, propositionId:String,sentences:String, json:String)
-object KnowledgeRegisterHistoryRecord {
-  implicit val jsonWrites: OWrites[KnowledgeRegisterHistoryRecord] = Json.writes[KnowledgeRegisterHistoryRecord]
-  implicit val jsonReads: Reads[KnowledgeRegisterHistoryRecord] = Json.reads[KnowledgeRegisterHistoryRecord]
-}
-*/
 
 class KnowledgeRegisterHistoryController @Inject()(knowledgeRegisterHistoryDao:KnowledgeRegisterHistoryDao, val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext) extends BaseController  with LazyLogging{
   def add() = Action(parse.json) { request =>
@@ -87,6 +79,22 @@ class KnowledgeRegisterHistoryController @Inject()(knowledgeRegisterHistoryDao:K
       }
     }
   }
+
+  def getCountByDocumentId()= Action(parse.json) { request =>
+    val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
+    try {
+      val json = request.body
+      val knowledgeRegisterHistoryCount: KnowledgeRegisterHistoryCount = Json.parse(json.toString).as[KnowledgeRegisterHistoryCount]
+      val count:Int = knowledgeRegisterHistoryDao.getCountByDocumentId(knowledgeRegisterHistoryCount.documentId)
+      Ok(Json.toJson(KnowledgeRegisterHistoryCount(documentId = knowledgeRegisterHistoryCount.documentId, count = count)))
+    } catch {
+      case e: Exception => {
+        logger.error(ToposoidUtils.formatMessageForLogger(e.toString, transversalState.userId), e)
+        BadRequest(Json.obj("status" -> "Error", "message" -> e.toString()))
+      }
+    }
+  }
+
 
   def searchByPropositionId = Action(parse.json) { request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]

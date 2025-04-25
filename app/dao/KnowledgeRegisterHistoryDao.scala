@@ -42,6 +42,12 @@ class KnowledgeRegisterHistoryDao @Inject()(protected val dbConfigProvider: Data
     Await.result(search, Duration.Inf)
   }
 
+  def getCountByDocumentId(documentId: String)(implicit ec: ExecutionContext): Int = {
+    val search = db.run(KnowledgeRegisterHistory.filter(_.documentId === documentId).length.result)
+    Await.result(search, Duration.Inf)
+  }
+
+
   def searchByPropositionId(propositionId: String)(implicit ec: ExecutionContext): Seq[KnowledgeRegisterHistoryRow] = {
     val search = db.run(KnowledgeRegisterHistory.filter(_.propositionId === propositionId).result)
     Await.result(search, Duration.Inf)

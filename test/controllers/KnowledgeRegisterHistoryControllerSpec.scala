@@ -19,7 +19,7 @@ package controllers
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, TransversalState}
-import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.KnowledgeRegisterHistoryRecord
+import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{DocumentAnalysisResultHistoryRecord, KnowledgeRegisterHistoryCount, KnowledgeRegisterHistoryRecord}
 import io.jvm.uuid.UUID
 import org.scalatest.BeforeAndAfterAll
 import org.scalatestplus.play._
@@ -141,6 +141,16 @@ class KnowledgeRegisterHistoryControllerSpec extends PlaySpec with GuiceOneAppPe
       assert(knowledgeRegisterHistoryRecord.propositionId == knowledgeRegisterHistoryRecord5.head.propositionId)
       assert(knowledgeRegisterHistoryRecord.sentences == knowledgeRegisterHistoryRecord5.head.sentences)
       assert(knowledgeRegisterHistoryRecord.json == knowledgeRegisterHistoryRecord5.head.json)
+
+      val fr4 = FakeRequest(POST, "/getKnowledgeRegisterHistoryCountByDocumentId")
+        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
+        .withJsonBody(Json.toJson(KnowledgeRegisterHistoryCount(documentId = documentId, count = 0)))
+      val result4 = call(controller.getCountByDocumentId(), fr4)
+      status(result4) mustBe OK
+
+      val jsonResult4: String = contentAsJson(result4).toString()
+      val knowledgeRegisterHistoryCount:KnowledgeRegisterHistoryCount = Json.parse(jsonResult4).as[KnowledgeRegisterHistoryCount]
+      assert(knowledgeRegisterHistoryCount.count == 1)
 
     }
   }
