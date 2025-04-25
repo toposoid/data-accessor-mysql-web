@@ -82,8 +82,8 @@ class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHi
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
-      val documentAnalysisResult: DocumentAnalysisResultHistoryRecord = Json.parse(json.toString).as[DocumentAnalysisResultHistoryRecord]
-      val records = documentAnalysisResultHistoryDao.searchByDocumentIdAndStateId(documentAnalysisResult.documentId, documentAnalysisResult.stateId).toList
+      val input: KnowledgeRegisterHistoryCount = Json.parse(json.toString).as[KnowledgeRegisterHistoryCount]
+      val records = documentAnalysisResultHistoryDao.searchByDocumentIdAndStateId(input.documentId, 1).toList
       val results: List[DocumentAnalysisResultHistoryRecord] = records.map(x => {
         DocumentAnalysisResultHistoryRecord(
           stateId = x.stateId,
@@ -92,7 +92,7 @@ class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHi
           totalSeparatedNumber = x.totalSeparatedNumber)
       })
       val knowledgeRegisterHistoryCount =  results.size match {
-        case 0 => KnowledgeRegisterHistoryCount(documentId = documentAnalysisResult.documentId, count = 0)
+        case 0 => KnowledgeRegisterHistoryCount(documentId = input.documentId, count = 0)
         case _ => KnowledgeRegisterHistoryCount(documentId = results.head.documentId, count = results.head.totalSeparatedNumber)
       }
       Ok(Json.toJson(knowledgeRegisterHistoryCount))

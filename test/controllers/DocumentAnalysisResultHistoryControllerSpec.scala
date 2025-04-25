@@ -63,7 +63,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
       val documentId = UUID.random.toString
       val controller: DocumentAnalysisResultHistoryController = inject[DocumentAnalysisResultHistoryController]
       val documentAnalysisResultRecord:DocumentAnalysisResultHistoryRecord = DocumentAnalysisResultHistoryRecord(
-        stateId = 0,
+        stateId = 1,
         documentId = documentId,
         originalFilename = "test",
         totalSeparatedNumber = 1
@@ -76,7 +76,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
       status(result) mustBe OK
 
       val documentAnalysisResultRecord2: DocumentAnalysisResultHistoryRecord = DocumentAnalysisResultHistoryRecord(
-        stateId = 0,
+        stateId = 1,
         documentId = documentId,
         originalFilename = "",
         totalSeparatedNumber = 0
@@ -96,9 +96,10 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
       assert(documentAnalysisResultRecord.originalFilename == documentAnalysisResultRecord3.head.originalFilename)
       assert(documentAnalysisResultRecord.totalSeparatedNumber == documentAnalysisResultRecord3.head.totalSeparatedNumber)
 
+      val input = KnowledgeRegisterHistoryCount(documentId = documentAnalysisResultRecord.documentId, count = 0)
       val fr3 = FakeRequest(POST, "/getKnowledgeRegisterHistoryTotalCountByDocumentId")
         .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
-        .withJsonBody(Json.toJson(documentAnalysisResultRecord))
+        .withJsonBody(Json.toJson(input))
       val result3 = call(controller.getTotalCountByDocumentId(), fr3)
       status(result3) mustBe OK
 
