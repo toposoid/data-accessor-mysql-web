@@ -109,4 +109,58 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
 
     }
   }
+
+
+  "DocumentAnalysisResultHistoryController Multi POST(add, searchLatestStateByDocumentId)" should {
+    "returns an appropriate response" in new WithApplication() {
+      val documentId = UUID.random.toString
+      val controller: DocumentAnalysisResultHistoryController = inject[DocumentAnalysisResultHistoryController]
+      val documentAnalysisResultRecords: List[DocumentAnalysisResultHistoryRecord] =
+        List(
+          DocumentAnalysisResultHistoryRecord(
+            stateId = 1,
+            documentId = documentId,
+            originalFilename = "test",
+            totalSeparatedNumber = 1),
+          DocumentAnalysisResultHistoryRecord(
+            stateId = 2,
+            documentId = documentId,
+            originalFilename = "test",
+            totalSeparatedNumber = 1),
+          DocumentAnalysisResultHistoryRecord(
+            stateId = 3,
+            documentId = documentId,
+            originalFilename = "test",
+            totalSeparatedNumber = 1)
+        )
+
+      documentAnalysisResultRecords.foreach(x => {
+        val fr = FakeRequest(POST, "/addDocumentAnalysisResultHistory")
+          .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
+          .withJsonBody(Json.toJson(x))
+        val result = call(controller.add(), fr)
+        status(result) mustBe OK
+      })
+
+      val documentAnalysisResultRecord: DocumentAnalysisResultHistoryRecord = DocumentAnalysisResultHistoryRecord(
+        stateId = 0,
+        documentId = documentId,
+        originalFilename = "",
+        totalSeparatedNumber = 0
+      )
+
+      val fr2 = FakeRequest(POST, "/searchLatestStateByDocumentId")
+        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
+        .withJsonBody(Json.toJson(documentAnalysisResultRecord))
+      val result2 = call(controller.searchLatestStateByDocumentId, fr2)
+      status(result2) mustBe OK
+
+      val jsonResult: String = contentAsJson(result2).toString()
+      val documentAnalysisResultRecord3: List[DocumentAnalysisResultHistoryRecord] = Json.parse(jsonResult).as[List[DocumentAnalysisResultHistoryRecord]]
+
+      assert(documentAnalysisResultRecord3.size == 1)
+      assert(documentAnalysisResultRecord3.head.documentId.equals(documentId))
+      assert(documentAnalysisResultRecord3.head.stateId == 3 )
+    }
+  }
 }

@@ -38,4 +38,10 @@ class DocumentAnalysisResultHistoryDao @Inject()(protected val dbConfigProvider:
     Await.result(search, Duration.Inf)
   }
 
+  def searchLatestStateByDocumentId(documentId: String)(implicit ec: ExecutionContext): Seq[DocumentAnalysisResultHistoryRow] = {
+    val search = db.run(DocumentAnalysisResultHistory.filter(x => x.documentId === documentId).sortBy( x => (x.id.desc)).result)
+    Await.result(search, Duration.Inf)
+  }
+
+
 }

@@ -78,6 +78,35 @@ class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHi
     }
   }
 
+  def searchLatestStateByDocumentId = Action(parse.json) { request =>
+    val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
+    try {
+      val json = request.body
+      val documentAnalysisResult: DocumentAnalysisResultHistoryRecord = Json.parse(json.toString).as[DocumentAnalysisResultHistoryRecord]
+      val records = documentAnalysisResultHistoryDao.searchLatestStateByDocumentId(documentAnalysisResult.documentId).toList
+      val results: List[DocumentAnalysisResultHistoryRecord] = records.size match {
+        case 0 => List.empty[DocumentAnalysisResultHistoryRecord]
+        case _ => {
+          val rec = records.head
+          List(
+            DocumentAnalysisResultHistoryRecord(
+              stateId = rec.stateId,
+              documentId = rec.documentId,
+              originalFilename = rec.originalFilename,
+              totalSeparatedNumber = rec.totalSeparatedNumber)
+          )
+        }
+      }
+      Ok(Json.toJson(results))
+    } catch {
+      case e: Exception => {
+        logger.error(ToposoidUtils.formatMessageForLogger(e.toString, transversalState.userId), e)
+        BadRequest(Json.obj("status" -> "Error", "message" -> e.toString()))
+      }
+    }
+  }
+
+
   def getTotalCountByDocumentId() = Action(parse.json) { request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {

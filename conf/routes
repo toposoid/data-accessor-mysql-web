@@ -6,6 +6,7 @@
 # An example controller showing a sample home page
 POST     /addDocumentAnalysisResultHistory                              controllers.DocumentAnalysisResultHistoryController.add()
 POST     /searchDocumentAnalysisResultHistoryByDocumentIdAndStateId     controllers.DocumentAnalysisResultHistoryController.searchByDocumentIdAndStateId()
+POST     /searchLatestDocumentAnalysisStateByDocumentId                 controllers.DocumentAnalysisResultHistoryController.searchLatestStateByDocumentId()
 POST     /getKnowledgeRegisterHistoryTotalCountByDocumentId             controllers.DocumentAnalysisResultHistoryController.getTotalCountByDocumentId()
 POST     /getAllDocumentAnalysisResultStates                            controllers.DocumentAnalysisResultStatesController.getAll()
 POST     /addKnowledgeRegisterHistory                                   controllers.KnowledgeRegisterHistoryController.add()
