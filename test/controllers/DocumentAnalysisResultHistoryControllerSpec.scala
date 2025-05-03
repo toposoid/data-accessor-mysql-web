@@ -149,7 +149,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
         totalSeparatedNumber = 0
       )
 
-      val fr2 = FakeRequest(POST, "/searchLatestStateByDocumentId")
+      val fr2 = FakeRequest(POST, "/searchLatestDocumentAnalysisStateByDocumentId")
         .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
         .withJsonBody(Json.toJson(documentAnalysisResultRecord))
       val result2 = call(controller.searchLatestStateByDocumentId, fr2)
