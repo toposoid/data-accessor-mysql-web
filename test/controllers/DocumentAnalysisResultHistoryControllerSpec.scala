@@ -63,10 +63,10 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
       val documentId = UUID.random.toString
       val controller: DocumentAnalysisResultHistoryController = inject[DocumentAnalysisResultHistoryController]
       val documentAnalysisResultRecord:DocumentAnalysisResultHistoryRecord = DocumentAnalysisResultHistoryRecord(
-        stateId = 1,
+        stateId = 5,
         documentId = documentId,
         originalFilename = "test",
-        totalSeparatedNumber = 1
+        totalSeparatedNumber = 3
       )
 
       val fr = FakeRequest(POST, "/addDocumentAnalysisResultHistory")
@@ -76,7 +76,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
       status(result) mustBe OK
 
       val documentAnalysisResultRecord2: DocumentAnalysisResultHistoryRecord = DocumentAnalysisResultHistoryRecord(
-        stateId = 1,
+        stateId = 5,
         documentId = documentId,
         originalFilename = "",
         totalSeparatedNumber = 0
@@ -105,7 +105,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
 
       val jsonResult3: String = contentAsJson(result3).toString()
       val knowledgeRegisterHistoryCount:KnowledgeRegisterHistoryCount  = Json.parse(jsonResult3).as[KnowledgeRegisterHistoryCount]
-      assert(knowledgeRegisterHistoryCount.count == 1)
+      assert(knowledgeRegisterHistoryCount.count == 3)
 
     }
   }
@@ -123,15 +123,15 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
             originalFilename = "test",
             totalSeparatedNumber = 1),
           DocumentAnalysisResultHistoryRecord(
-            stateId = 2,
+            stateId = 3,
             documentId = documentId,
             originalFilename = "test",
             totalSeparatedNumber = 1),
           DocumentAnalysisResultHistoryRecord(
-            stateId = 3,
+            stateId = 5,
             documentId = documentId,
             originalFilename = "test",
-            totalSeparatedNumber = 1)
+            totalSeparatedNumber = 3)
         )
 
       documentAnalysisResultRecords.foreach(x => {
@@ -160,7 +160,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
 
       assert(documentAnalysisResultRecord3.size == 1)
       assert(documentAnalysisResultRecord3.head.documentId.equals(documentId))
-      assert(documentAnalysisResultRecord3.head.stateId == 3 )
+      assert(documentAnalysisResultRecord3.head.stateId == 5 )
     }
   }
 }

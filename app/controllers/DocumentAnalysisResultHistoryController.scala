@@ -112,7 +112,8 @@ class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHi
     try {
       val json = request.body
       val input: KnowledgeRegisterHistoryCount = Json.parse(json.toString).as[KnowledgeRegisterHistoryCount]
-      val records = documentAnalysisResultHistoryDao.searchByDocumentIdAndStateId(input.documentId, 1).toList
+      //The total number cannot be determined until the file analysis is complete.
+      val records = documentAnalysisResultHistoryDao.searchByDocumentIdAndStateId(input.documentId, 5).toList
       val results: List[DocumentAnalysisResultHistoryRecord] = records.map(x => {
         DocumentAnalysisResultHistoryRecord(
           stateId = x.stateId,
