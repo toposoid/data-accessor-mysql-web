@@ -12,7 +12,7 @@ This microservice get information from Redis in-memory database. outputs the res
 
 ## Recommended Environment For Standalone
 Required: at least 2GB of RAM
-Required: at least 1.13GB of HDD(Docker Image Size)
+Required: at least 1.5GB of HDD(Docker Image Size)
 
 ## Setup For Standalone
 ```bssh
@@ -21,6 +21,21 @@ docker-compose up
 The first startup takes a long time until docker pull finishes.
 ## Usage
 ```bash
+#ex1 add data
+curl -X POST -H "Content-Type: application/json" -H 'X_TOPOSOID_TRANSVERSAL_STATE: {"userId":"test-user", "username":"guest", "roleId":0, "csrfToken":""}' -d '{
+    "stateId": 1,
+    "documentId": "faf98dd2-eb6e-11ef-855d-acde48001122",
+    "originalFilename": "DOCUMENT_FOR_TEST.pdf",
+    "totalSeparatedNumber": -1
+}'  http://localhost:9016/addDocumentAnalysisResultHistory
+
+#ex2 get data
+curl -X POST -H "Content-Type: application/json" -H 'X_TOPOSOID_TRANSVERSAL_STATE: {"userId":"test-user", "username":"guest", "roleId":0, "csrfToken":""}' -d '{
+    "stateId": 1,
+    "documentId": "faf98dd2-eb6e-11ef-855d-acde48001122",
+    "originalFilename": "",
+    "totalSeparatedNumber": -1
+}'  http://localhost:9016/searchLatestDocumentAnalysisStateByDocumentId
 ```
 
 ## Note
