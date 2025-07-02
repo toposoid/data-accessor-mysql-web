@@ -17,5 +17,6 @@ else
   _JAVA_OPTIONS="$_JAVA_OPTIONS -Xss512k "
 fi
 
+export _JAVA_OPTIONS=$_JAVA_OPTIONS
 cd /app/data-accessor-mysql-web/target/universal
 data-accessor-mysql-web-0.6-SNAPSHOT/bin/data-accessor-mysql-web
