@@ -19,4 +19,4 @@ fi
 
 export _JAVA_OPTIONS=$_JAVA_OPTIONS
 cd /app/data-accessor-mysql-web/target/universal
-data-accessor-mysql-web-0.6-SNAPSHOT/bin/data-accessor-mysql-web
+data-accessor-mysql-web-0.6/bin/data-accessor-mysql-web
