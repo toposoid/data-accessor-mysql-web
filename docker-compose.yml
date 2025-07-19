@@ -1,7 +1,7 @@
 version: '3'
 services:
   data-accessor-mysql-web:
-    image: toposoid/data-accessor-mysql-web:0.6-SNAPSHOT
+    image: toposoid/data-accessor-mysql-web:0.6
     environment:
       - PRIVATE_IP_ADDRESS=data-accessor-mysql-web
       - TOPOSOID_RDB_HOST=mysql
@@ -15,7 +15,7 @@ services:
     depends_on:
       - mysql
   mysql:
-    image: toposoid/toposoid-rdb:0.6-SNAPSHOT
+    image: toposoid/toposoid-rdb:0.6
     environment:
       - MYSQL_DATABASE=toposoiddb
       - MYSQL_USER=toposoid
