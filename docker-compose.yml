@@ -1,0 +1,27 @@
+version: '3'
+services:
+  data-accessor-mysql-web:
+    image: toposoid/data-accessor-mysql-web:0.6
+    environment:
+      - PRIVATE_IP_ADDRESS=data-accessor-mysql-web
+      - TOPOSOID_RDB_HOST=mysql
+      - TOPOSOID_RDB_URL=jdbc:mysql://mysql/toposoiddb?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      - TOPOSOID_JVM_XMS=512m
+      - TOPOSOID_JVM_XMX=1g
+      - TOPOSOID_JVM_XSS=512k
+      - PLAY_HTTP_PORT=9016
+    ports:
+      - 9016:9016
+    depends_on:
+      - mysql
+  mysql:
+    image: toposoid/toposoid-rdb:0.6
+    environment:
+      - MYSQL_DATABASE=toposoiddb
+      - MYSQL_USER=toposoid
+      - MYSQL_PASSWORD=p@ssw0rd
+      - MYSQL_ROOT_PASSWORD=p@ssw0rd
+      - TZ=UTC
+    ports:
+      - 3306:3306
+
