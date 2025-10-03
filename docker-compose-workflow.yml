@@ -1,7 +1,7 @@
 version: '3'
 services:
   data-accessor-mysql-web:
-    image: data-accessor-mysql-web:0.6
+    image: data-accessor-mysql-web:0.7-SNAPSHOT
     tty: true
     environment:
       - PRIVATE_IP_ADDRESS=data-accessor-mysql-web
