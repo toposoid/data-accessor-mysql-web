@@ -21,8 +21,8 @@ import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, ToposoidUtils, Trans
 import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{DocumentAnalysisResultHistoryRecord, KnowledgeRegisterHistoryCount, KnowledgeRegisterHistoryRecord}
 import com.typesafe.scalalogging.LazyLogging
 import dao.KnowledgeRegisterHistoryDao
-import play.api.libs.json.{Json, OWrites, Reads}
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.libs.json.{Json, OWrites, Reads, JsValue}
+import play.api.mvc.{BaseController, ControllerComponents, Action}
 import model.Tables.KnowledgeRegisterHistoryRow
 
 import java.time.LocalDateTime
@@ -30,7 +30,7 @@ import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class KnowledgeRegisterHistoryController @Inject()(knowledgeRegisterHistoryDao:KnowledgeRegisterHistoryDao, val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext) extends BaseController  with LazyLogging{
-  def add() = Action(parse.json) { request =>
+  def add():Action[JsValue] = Action(parse.json[JsValue]){ request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
@@ -57,7 +57,7 @@ class KnowledgeRegisterHistoryController @Inject()(knowledgeRegisterHistoryDao:K
     }
   }
 
-  def searchByDocumentId = Action(parse.json) { request =>
+  def searchByDocumentId:Action[JsValue] = Action(parse.json[JsValue]){ request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
@@ -81,7 +81,7 @@ class KnowledgeRegisterHistoryController @Inject()(knowledgeRegisterHistoryDao:K
     }
   }
 
-  def getCountByDocumentId()= Action(parse.json) { request =>
+  def getCountByDocumentId():Action[JsValue] = Action(parse.json[JsValue]){ request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
@@ -97,7 +97,7 @@ class KnowledgeRegisterHistoryController @Inject()(knowledgeRegisterHistoryDao:K
   }
 
 
-  def searchByPropositionId = Action(parse.json) { request =>
+  def searchByPropositionId:Action[JsValue] = Action(parse.json[JsValue]){ request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body

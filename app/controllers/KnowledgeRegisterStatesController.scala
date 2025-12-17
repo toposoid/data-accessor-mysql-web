@@ -21,8 +21,8 @@ import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, ToposoidUtils, Trans
 import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.KnowledgeRegisterStatesRecord
 import com.typesafe.scalalogging.LazyLogging
 import dao.KnowledgeRegisterStatesDao
-import play.api.libs.json.{Json, OWrites, Reads}
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.libs.json.{Json, OWrites, Reads, JsValue}
+import play.api.mvc.{BaseController, ControllerComponents, Action}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
@@ -36,7 +36,7 @@ object KnowledgeRegisterStatesRecord {
 */
 class KnowledgeRegisterStatesController @Inject()(knowledgeRegisterStatesDao:KnowledgeRegisterStatesDao, val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext) extends BaseController  with LazyLogging{
 
-  def getAll = Action(parse.json) { request =>
+  def getAll:Action[JsValue] = Action(parse.json[JsValue]){ request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val result = knowledgeRegisterStatesDao.all()

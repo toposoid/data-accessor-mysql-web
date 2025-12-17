@@ -39,13 +39,13 @@ trait DocumentAnalysisResultHistoryTable {
   /** GetResult implicit for fetching DocumentAnalysisResultHistoryRow objects using plain SQL queries */
   implicit def GetResultDocumentAnalysisResultHistoryRow(implicit e0: GR[Long], e1: GR[String], e2: GR[Int], e3: GR[LocalDateTime]): GR[DocumentAnalysisResultHistoryRow] = GR{
     prs => import prs._
-    DocumentAnalysisResultHistoryRow.tupled((<<[Long], <<[String], <<[Long], <<[String], <<[String], <<[Int], <<[LocalDateTime], <<[LocalDateTime]))
+    (DocumentAnalysisResultHistoryRow.apply _).tupled((<<[Long], <<[String], <<[Long], <<[String], <<[String], <<[Int], <<[LocalDateTime], <<[LocalDateTime]))
   }
   /** Table description of table document_analysis_result_history. Objects of this class serve as prototypes for rows in queries. */
   class DocumentAnalysisResultHistory(_tableTag: Tag) extends profile.api.Table[DocumentAnalysisResultHistoryRow](_tableTag, Some("toposoiddb"), "document_analysis_result_history") {
-    def * = (id, userId, stateId, documentId, originalFilename, totalSeparatedNumber, createdAt, updatedAt).<>(DocumentAnalysisResultHistoryRow.tupled, DocumentAnalysisResultHistoryRow.unapply)
+    def * = (id, userId, stateId, documentId, originalFilename, totalSeparatedNumber, createdAt, updatedAt).<>((DocumentAnalysisResultHistoryRow.apply _).tupled, DocumentAnalysisResultHistoryRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(userId), Rep.Some(stateId), Rep.Some(documentId), Rep.Some(originalFilename), Rep.Some(totalSeparatedNumber), Rep.Some(createdAt), Rep.Some(updatedAt))).shaped.<>({r=>import r._; _1.map(_=> DocumentAnalysisResultHistoryRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(userId), Rep.Some(stateId), Rep.Some(documentId), Rep.Some(originalFilename), Rep.Some(totalSeparatedNumber), Rep.Some(createdAt), Rep.Some(updatedAt))).shaped.<>({r=>import r._; _1.map(_=> (DocumentAnalysisResultHistoryRow.apply _).tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(BIGINT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Long] = column[Long]("id", O.AutoInc, O.PrimaryKey)

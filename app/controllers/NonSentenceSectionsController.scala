@@ -22,8 +22,8 @@ import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{KnowledgeRegist
 import com.typesafe.scalalogging.LazyLogging
 import dao.NonSentenceSectionsDao
 import model.Tables.NonSentenceSectionsRow
-import play.api.libs.json.Json
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.libs.json.{Json, JsValue}
+import play.api.mvc.{BaseController, ControllerComponents, Action}
 
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -38,7 +38,7 @@ object NonSentenceSectionsRecord {
 */
 
 class NonSentenceSectionsController @Inject()(nonSentenceSectionsDao:NonSentenceSectionsDao, val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext) extends BaseController  with LazyLogging{
-  def add() = Action(parse.json) { request =>
+  def add():Action[JsValue] = Action(parse.json[JsValue]){ request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
@@ -62,7 +62,7 @@ class NonSentenceSectionsController @Inject()(nonSentenceSectionsDao:NonSentence
     }
   }
 
-  def searchByDocumentId = Action(parse.json) { request =>
+  def searchByDocumentId:Action[JsValue] = Action(parse.json[JsValue]){ request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body

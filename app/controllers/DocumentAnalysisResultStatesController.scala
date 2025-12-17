@@ -21,15 +21,16 @@ import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, ToposoidUtils, Trans
 import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.DocumentAnalysisResultStatesRecord
 import dao.DocumentAnalysisResultStatesDao
 import com.typesafe.scalalogging.LazyLogging
-import play.api.libs.json.Json
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.libs.json.{Json, JsValue}
+import play.api.mvc.{BaseController, ControllerComponents, Action}
+import play.api.mvc._
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class DocumentAnalysisResultStatesController @Inject()(documentAnalysisResultStatesDao:DocumentAnalysisResultStatesDao, val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext) extends BaseController  with LazyLogging{
 
-  def getAll = Action(parse.json) { request =>
+  def getAll:Action[JsValue] = Action(parse.json[JsValue]){ request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val result = documentAnalysisResultStatesDao.all()

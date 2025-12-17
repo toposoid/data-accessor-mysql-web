@@ -29,7 +29,7 @@ trait ExMySQLProfile extends JdbcProfile with slick.jdbc.MySQLProfile { driver =
 
   override val columnTypes = new ExJdbcTypes
 
-  class ExJdbcTypes extends super.JdbcTypes {
+  class ExJdbcTypes extends super.MySQLJdbcTypes {
 
     @inline
     private[this] def stringToMySqlString(value: String): String = {
