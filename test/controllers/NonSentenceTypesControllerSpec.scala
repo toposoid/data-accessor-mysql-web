@@ -17,8 +17,10 @@
 
 package controllers
 
-import akka.actor.ActorSystem
-import akka.stream.Materializer
+//import akka.actor.ActorSystem
+//import akka.stream.Materializer
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.Materializer
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, TransversalState}
 import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.NonSentenceTypesRecord
 import dao.NonSentenceTypesDao
@@ -46,7 +48,7 @@ import scala.concurrent.ExecutionContext
 class NonSentenceTypesControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with BeforeAndAfterAll {
 
   val as = ActorSystem()
-  implicit val materializer = Materializer(as)
+  implicit val materializer:Materializer = Materializer(as)
 
   lazy val appBuilder: GuiceApplicationBuilder = new GuiceApplicationBuilder().in(Mode.Test)
   lazy val injector: Injector = appBuilder.injector()

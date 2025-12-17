@@ -17,8 +17,11 @@
 
 package controllers
 
-import akka.actor.ActorSystem
-import akka.stream.Materializer
+//import akka.actor.ActorSystem
+//import akka.stream.Materializer
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.Materializer
+
 import com.ideal.linked.toposoid.common.{TRANSVERSAL_STATE, TransversalState}
 import com.ideal.linked.toposoid.knowledgebase.regist.rdb.model.{DocumentAnalysisResultHistoryRecord, KnowledgeRegisterHistoryCount}
 import org.scalatestplus.play._
@@ -27,7 +30,7 @@ import play.api.libs.json.Json
 import play.api.test._
 import play.api.test.Helpers._
 import play.test.WithApplication
-import io.jvm.uuid.UUID
+//import io.jvm.uuid.UUID
 import org.scalatest.BeforeAndAfterAll
 import play.api.Mode
 import play.api.inject.Injector
@@ -42,7 +45,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with BeforeAndAfterAll{
 
   val as = ActorSystem()
-  implicit val materializer = Materializer(as)
+  implicit val materializer:Materializer = Materializer(as)
 
   lazy val appBuilder: GuiceApplicationBuilder = new GuiceApplicationBuilder().in(Mode.Test)
   lazy val injector: Injector = appBuilder.injector()
@@ -61,7 +64,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
 
   "DocumentAnalysisResultHistoryController POST(add, searchByDocument)" should {
     "returns an appropriate response" in new WithApplication(){
-      val documentId = UUID.random.toString
+      val documentId = java.util.UUID.randomUUID().toString
       val controller: DocumentAnalysisResultHistoryController = inject[DocumentAnalysisResultHistoryController]
       val documentAnalysisResultRecord:DocumentAnalysisResultHistoryRecord = DocumentAnalysisResultHistoryRecord(
         stateId = 5,
@@ -114,7 +117,7 @@ class DocumentAnalysisResultHistoryControllerSpec extends PlaySpec with GuiceOne
 
   "DocumentAnalysisResultHistoryController Multi POST(add, searchLatestStateByDocumentId)" should {
     "returns an appropriate response" in new WithApplication() {
-      val documentId = UUID.random.toString
+      val documentId = java.util.UUID.randomUUID().toString
       val controller: DocumentAnalysisResultHistoryController = inject[DocumentAnalysisResultHistoryController]
       val documentAnalysisResultRecords: List[DocumentAnalysisResultHistoryRecord] =
         List(

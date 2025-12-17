@@ -41,13 +41,13 @@ trait KnowledgeRegisterHistoryTable {
   /** GetResult implicit for fetching KnowledgeRegisterHistoryRow objects using plain SQL queries */
   implicit def GetResultKnowledgeRegisterHistoryRow(implicit e0: GR[Long], e1: GR[String], e2: GR[Int], e3: GR[LocalDateTime]): GR[KnowledgeRegisterHistoryRow] = GR{
     prs => import prs._
-    KnowledgeRegisterHistoryRow.tupled((<<[Long], <<[String], <<[Long], <<[String], <<[Int], <<[String], <<[String], <<[String], <<[LocalDateTime], <<[LocalDateTime]))
+    (KnowledgeRegisterHistoryRow.apply _).tupled((<<[Long], <<[String], <<[Long], <<[String], <<[Int], <<[String], <<[String], <<[String], <<[LocalDateTime], <<[LocalDateTime]))
   }
   /** Table description of table knowledge_register_history. Objects of this class serve as prototypes for rows in queries. */
   class KnowledgeRegisterHistory(_tableTag: Tag) extends profile.api.Table[KnowledgeRegisterHistoryRow](_tableTag, Some("toposoiddb"), "knowledge_register_history") {
-    def * = (id, userId, stateId, documentId, sequentialNumber, propositionId, sentences, json, createdAt, updatedAt).<>(KnowledgeRegisterHistoryRow.tupled, KnowledgeRegisterHistoryRow.unapply)
+    def * = (id, userId, stateId, documentId, sequentialNumber, propositionId, sentences, json, createdAt, updatedAt).<>((KnowledgeRegisterHistoryRow.apply _).tupled, KnowledgeRegisterHistoryRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(userId), Rep.Some(stateId), Rep.Some(documentId), Rep.Some(sequentialNumber), Rep.Some(propositionId), Rep.Some(sentences), Rep.Some(json), Rep.Some(createdAt), Rep.Some(updatedAt))).shaped.<>({r=>import r._; _1.map(_=> KnowledgeRegisterHistoryRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(userId), Rep.Some(stateId), Rep.Some(documentId), Rep.Some(sequentialNumber), Rep.Some(propositionId), Rep.Some(sentences), Rep.Some(json), Rep.Some(createdAt), Rep.Some(updatedAt))).shaped.<>({r=>import r._; _1.map(_=> (KnowledgeRegisterHistoryRow.apply _).tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(BIGINT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Long] = column[Long]("id", O.AutoInc, O.PrimaryKey)

@@ -38,13 +38,13 @@ trait NonSentenceSectionsTable {
   /** GetResult implicit for fetching NonSentenceSectionsRow objects using plain SQL queries */
   implicit def GetResultNonSentenceSectionsRow(implicit e0: GR[Long], e1: GR[String], e2: GR[Int], e3: GR[LocalDateTime]): GR[NonSentenceSectionsRow] = GR{
     prs => import prs._
-    NonSentenceSectionsRow.tupled((<<[Long], <<[String], <<[Int], <<[Long], <<[String], <<[LocalDateTime], <<[LocalDateTime]))
+    (NonSentenceSectionsRow.apply _).tupled((<<[Long], <<[String], <<[Int], <<[Long], <<[String], <<[LocalDateTime], <<[LocalDateTime]))
   }
   /** Table description of table non_sentence_sections. Objects of this class serve as prototypes for rows in queries. */
   class NonSentenceSections(_tableTag: Tag) extends profile.api.Table[NonSentenceSectionsRow](_tableTag, Some("toposoiddb"), "non_sentence_sections") {
-    def * = (id, documentId, pageNo, nonSentenceType, nonSentence, createdAt, updatedAt).<>(NonSentenceSectionsRow.tupled, NonSentenceSectionsRow.unapply)
+    def * = (id, documentId, pageNo, nonSentenceType, nonSentence, createdAt, updatedAt).<>((NonSentenceSectionsRow.apply _).tupled, NonSentenceSectionsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(documentId), Rep.Some(pageNo), Rep.Some(nonSentenceType), Rep.Some(nonSentence), Rep.Some(createdAt), Rep.Some(updatedAt))).shaped.<>({r=>import r._; _1.map(_=> NonSentenceSectionsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(documentId), Rep.Some(pageNo), Rep.Some(nonSentenceType), Rep.Some(nonSentence), Rep.Some(createdAt), Rep.Some(updatedAt))).shaped.<>({r=>import r._; _1.map(_=> (NonSentenceSectionsRow.apply _).tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(BIGINT UNSIGNED), AutoInc, PrimaryKey */
     val id: Rep[Long] = column[Long]("id", O.AutoInc, O.PrimaryKey)

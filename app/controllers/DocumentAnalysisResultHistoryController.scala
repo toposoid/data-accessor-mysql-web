@@ -23,8 +23,8 @@ import com.typesafe.scalalogging.LazyLogging
 import dao.DocumentAnalysisResultHistoryDao
 import model.Tables.DocumentAnalysisResultHistoryRow
 import play.api.libs.json.Json
-import play.api.mvc.{BaseController, ControllerComponents}
-import play.api.libs.json.{Json, OWrites, Reads}
+import play.api.mvc.{BaseController, ControllerComponents, Action}
+import play.api.libs.json.{Json, OWrites, Reads, JsValue}
 
 import javax.inject.Inject
 import java.time.LocalDateTime
@@ -33,7 +33,7 @@ import scala.concurrent.ExecutionContext
 
 class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHistoryDao:DocumentAnalysisResultHistoryDao, val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext) extends BaseController  with LazyLogging{
 
-  def add()  = Action(parse.json) { request =>
+  def add():Action[JsValue] = Action(parse.json[JsValue]) { request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
@@ -57,7 +57,7 @@ class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHi
     }
   }
 
-  def searchByDocumentIdAndStateId = Action(parse.json) { request =>
+  def searchByDocumentIdAndStateId:Action[JsValue] = Action(parse.json[JsValue]) { request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
@@ -79,7 +79,7 @@ class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHi
     }
   }
 
-  def searchLatestStateByDocumentId = Action(parse.json) { request =>
+  def searchLatestStateByDocumentId:Action[JsValue] = Action(parse.json[JsValue]) { request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
@@ -108,7 +108,7 @@ class DocumentAnalysisResultHistoryController @Inject()(documentAnalysisResultHi
   }
 
 
-  def getTotalCountByDocumentId() = Action(parse.json) { request =>
+  def getTotalCountByDocumentId():Action[JsValue] = Action(parse.json[JsValue]) { request =>
     val transversalState = Json.parse(request.headers.get(TRANSVERSAL_STATE.str).get).as[TransversalState]
     try {
       val json = request.body
